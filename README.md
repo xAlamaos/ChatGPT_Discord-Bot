@@ -60,7 +60,7 @@
 5. Execute the shortcut and bot will finally turn on.
 
 > **Warning:**
-> If the executing the `INSTALL.bat` or `start_bot.bat` files won't work, try uninstalling and installing again Python.
+> If the execution the `INSTALL.bat` or `start_bot.bat` files won't work, try uninstalling and installing again Python.
 
 
 > **Aditional Note:**
