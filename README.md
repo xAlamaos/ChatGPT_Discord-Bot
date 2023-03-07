@@ -9,6 +9,7 @@
 * `/private` Switches to private mode (Only user who chats can see the answer)
 * `/public`  Switches to public mode (Default Mode. Everyone can see the answers)
 * `/replyall`  Switches between replyall mode and default mode (replyall mode do not require slash command)
+* `/chat-model [type]`  Switches between Official and Unofficial ChatGPT models
 * `/reset` It wipes ChatGPT entire conversation history
 
 > **Warning:**
@@ -25,9 +26,22 @@
 5. Turn MESSAGE CONTENT INTENT `ON`
 6. Invite your bot to your server via OAuth2 URL Generator
 
-## Step 2: ChatGPT Authentication - 2 approaches
+## Step 2: ChatGPT Authentication
 
-### Email/Password authentication Mode
+### Step 2.1: Official OpenAI API Authentication
+
+#### Generate your OpenAI API key
+1. Go to https://platform.openai.com/account/api-keys and login in your account;
+
+2. Click to create new secret key and copy it;
+
+3. Paste your API key to `.env` under `OPENAI_API_KEY`
+
+4. Procede to Step 3
+
+### Step 2.2: Unnoficial OpenAI Authentication (website) - 2 approaches
+
+#### Email/Password authentication Mode
 1. Create an account on https://chat.openai.com/chat
 
 2. Type your email into `.env` file under `OPENAI_EMAIL`
@@ -36,7 +50,7 @@
 
 4. You may proceed to step 3
 
-### Session Token Authentication Mode
+#### Session Token Authentication Mode
 1. Go to https://chat.openai.com/chat and log in your account
 
 2. Open console with `F12`

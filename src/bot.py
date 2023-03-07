@@ -29,10 +29,15 @@ async def send_message(message, user_message):
     else:
         author = message.author.id
     try:
-        response = '> **' + user_message + '** - <@' + \
-            str(author) + '> \n\n'
-        response = f"{response}{await responses.handle_response(user_message)}"
+        response = (f'> **{user_message}** - <@{str(author)}' + '> \n\n')
+        chat_model = os.getenv("CHAT_MODEL")
+        if chat_model == "OFFICIAL":
+            response = f"{response}{await responses.official_handle_response(user_message)}"
+
+        elif chat_model == "UNOFFICIAL":
+            response = f"{response}{await responses.unofficial_handle_response(user_message)}"
         char_limit = 1900
+
         if len(response) > char_limit:
             # Splits the answer into smaller parts under 1900 characters each(Discord limit is 2000)
             if "```" in response:
@@ -94,26 +99,31 @@ async def send_message(message, user_message):
 
 
 async def send_prompt(client):
-    config_dir = os.path.abspath(__file__ + "/../../")
-    prompt = "prompt.txt"
-    prompt_path = os.path.join(config_dir, prompt)
+    config_dir = os.path.abspath(f"{__file__} + /../../")
+    init_prompt = "prompt.txt"
+    prompt_path = os.path.join(config_dir, init_prompt)
     discord_channel_id = os.getenv("DISCORD_CHANNEL_ID")
     try:
         if os.path.isfile(prompt_path) and os.path.getsize(prompt_path) > 0:
-            with open(prompt_path, "r") as f:
+            with open(prompt_path, "r", encoding="UTF-8") as f:
                 prompt = f.read()
                 if discord_channel_id:
-                    logger.info(f"Sending starting prompt with size {len(prompt)}")
-                    response_message = await responses.handle_response(prompt)
+                    logger.info(f"Sending initial prompt with size {len(prompt)}")
+                    chat_model = os.getenv("CHAT_MODEL")
+                    response_message = ""
+                    if chat_model == "OFFICIAL":
+                        response = f"{response_message}{await responses.official_handle_response(prompt)}"
+                    elif chat_model == "UNOFFICIAL":
+                        response = f"{response_message}{await responses.unofficial_handle_response(prompt)}"
                     channel = client.get_channel(int(discord_channel_id))
-                    await channel.send(response_message)
-                    logger.info(f"Starting prompt response:{response_message}")
+                    await channel.send(response)
+                    logger.info(f"Initial prompt response:{response_message}")
                 else:
-                    logger.info("No Channel selected. Skipping the initial prompt.")
+                    logger.info("No Channel selected. Skipping initial prompt.")
         else:
-            logger.info(f"No {prompt}. Skipping the initial prompt.")
+            logger.info(f"No {init_prompt}. Skipping initial prompt.")
     except Exception as e:
-        logger.exception(f"Error while trying to send the initial prompt: {e}")
+        logger.exception(f"Error while trying to send initial prompt: {e}")
 
 
 def run_discord_bot():
@@ -183,10 +193,31 @@ def run_discord_bot():
                                             "If you want to switch back to normal mode, use `/replyAll` again.**")
             logger.warning("\x1b[31mSwitch to replyAll mode\x1b[0m")
         isReplyAll = not isReplyAll
+
+    @client.tree.command(name="chat-model", description="Switch to a different chat model")
+    # Official = Official GPT-3.5  and Unofficial = Website ChatGPT
+    @app_commands.choices(choices=[
+        app_commands.Choice(name="Official", value="OFFICIAL"),
+        app_commands.Choice(name="Unofficial", value="UNOFFICIAL")
+    ])
+    async def chat_model(interaction: discord.Interaction, choices: app_commands.Choice[str]):
+        await interaction.response.defer(ephemeral=False)
+        if choices.value == "OFFICIAL":
+            os.environ["CHAT_MODEL"] = "OFFICIAL"
+            await interaction.followup.send("> **Info: You are now in using the official ChatGPT 3.5 model.**")
+            logger.warning("\x1b[31mSwitch to OFFICIAL chat model\x1b[0m")
+        elif choices.value == "UNOFFICIAL":
+            os.environ["CHAT_MODEL"] = "UNOFFICIAL"
+            await interaction.followup.send("> **Info: You are now using the unofficial ChatGPT model (Website).**")
+            logger.warning("\x1b[31mSwitch to UNOFFICIAL(Website) chat model\x1b[0m")
     
     @client.tree.command(name="reset", description="Wipes the entire ChatGPT conversation history")
     async def reset(interaction: discord.Interaction):
-        responses.chatbot.reset_chat()
+        model = os.getenv("CHAT_MODEL")
+        if model == "OFFICIAL":
+            responses.offical_chatbot.reset()
+        elif model == "UNOFFICIAL":
+            responses.unofficial_chatbot.reset_chat()
         await interaction.response.defer(ephemeral=False)
         await interaction.followup.send("> **Info: ChatGPT conversation history has been wiped.**")
         logger.warning("\x1b[31mChatGPT bot has been successfully wiped\x1b[0m")
@@ -198,8 +229,12 @@ def run_discord_bot():
         await interaction.followup.send(""":ring_buoy:**___BASIC COMMANDS___** \n
         **Chat with ChatGPT**
         - `/chat [message]`
+        **Switch between Official/Unofficial ChatGPT mode**
+        - `/chat-model [type]` 
         **ChatGPT switch to public mode**
         - `/public` 
+        **ChatGPT switch to private mode**
+        - `/private` 
         **ChatGPT switch between replyall mode and default mode**
         - `/replyall`
         **Clear ChatGPT conversation history**

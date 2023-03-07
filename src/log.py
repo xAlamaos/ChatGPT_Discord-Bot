@@ -13,10 +13,8 @@ class CustomFormatter(logging.Formatter):
         (logging.CRITICAL, '\x1b[41m'),
     ]
     FORMATS = {
-        level: logging.Formatter(
-            f'\x1b[30;1m%(asctime)s\x1b[0m {color}%(levelname)-8s\x1b[0m \x1b[35m%(name)s\x1b[0m -> %(message)s',
-            '%Y-%m-%d %H:%M:%S'
-        )
+        level: logging.Formatter(f'\x1b[30;1m%(asctime)s\x1b[0m {color}%(levelname)-8s\x1b[0m \x1b[35m%(name)s\x1b[0m '
+                                 f'-> %(message)s', '%Y-%m-%d %H:%M:%S')
         for level, color in LEVEL_COLORS
     }
 
@@ -48,7 +46,7 @@ def setup_logger(module_name: str) -> logging.Logger:
     # Adds console handler to logger
     logger.addHandler(console_handler)
 
-    # Checks if logging is enabled
+    # Checks if Log Mode is enabled on .env
     if os.getenv("LOGGING") == "True":
         # Specifies that the log file path is the same as `main.py` file path
         grandparent_dir = os.path.abspath(__file__ + "/../../")
@@ -57,7 +55,7 @@ def setup_logger(module_name: str) -> logging.Logger:
         # Creates local log handler
         log_handler = logging.handlers.RotatingFileHandler(
             filename=log_path,
-            encoding='utf-8',
+            encoding='UTF-8',
             maxBytes=32 * 1024 * 1024,  # 32 MiB
             backupCount=2,  # Rotates through 5 files
         )
