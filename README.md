@@ -2,15 +2,37 @@
 
 > ### Make your own ChatGPT Discord bot
 ---
+> **Warning**
+>
+> #### 2023-03-18 GPT-4 is now supported and the dependency packages have been updated. Please reinstall the dependencies once again
+>
+> #### 2023-03-16 OpenAI has deactivated some accounts using UNOFFICIAL model. Recommend using OFFICIAL model
 
 ## Features
 
 * `/chat [message]` Chat with ChatGPT
+* `/draw [prompt]` Generate an image with the Dalle2 model
 * `/private` Switches to private mode (Only user who chats can see the answer)
 * `/public`  Switches to public mode (Default Mode. Everyone can see the answers)
 * `/replyall`  Switches between replyall mode and default mode (replyall mode do not require slash command)
-* `/chat-model [type]`  Switches between Official and Unofficial ChatGPT models
 * `/reset` It wipes ChatGPT entire conversation history
+
+* `/chat-model [type]`  Switches between Official and Unofficial ChatGPT models
+   * `OFFICIAL-GPT-3.5`: GPT-3.5 model
+   * `OFFICIAL-GPT-4.0`: GPT-4.0 model (make sure your account can access gpt-4 model)
+   * `Website ChatGPT-3.5`: Website ChatGPT-3.5 model (UNOFFICIAL)
+   * `Website ChatGPT-4.0`: Website ChatGPT-4.0 model (UNOFFICIAL)(available if you got a plus account)
+   
+* `/switchpersona [persona]` Switch between optional chatGPT personas
+   * `random`: Picks a random persona
+   * `chatGPT`: Standard ChatGPT mode
+   * `dan`: Dan Mode 11.0, the Infamous Do Anything Now mode
+   * `sda`: Superior DAN has even more freedom in DAN Mode
+   * `confidant`: Evil Confidant, evil trusted confidant
+   * `based`: BasedGPT v2, sexy gpt
+   * `oppo`: OPPO says exact opposite of what chatGPT would say
+   * `dev`: Developer Mode, v2 Developer mode enabled
+   
 
 > **Warning:**
 > On the `replyall` mode, the bot will be constantly listening to your chat and will keep replying to it. If you intend to use such mode, be advised to restrict the bot to a specific channel only.

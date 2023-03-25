@@ -29,7 +29,7 @@ class CustomFormatter(logging.Formatter):
             record.exc_text = f'\x1b[31m{text}\x1b[0m'
 
         output = formatter.format(record)
-        # Removes the cache layer
+        # Remove the cache layer
         record.exc_text = None
         return output
 
@@ -49,8 +49,8 @@ def setup_logger(module_name: str) -> logging.Logger:
     # Checks if Log Mode is enabled on .env
     if os.getenv("LOGGING") == "True":
         # Specifies that the log file path is the same as `main.py` file path
-        grandparent_dir = os.path.abspath(__file__ + "/../../")
-        log_name = "chatgpt_bot.log"
+        grandparent_dir = os.path.abspath(f"{__file__}/../../")
+        log_name = 'chatgpt_discord_bot.log'
         log_path = os.path.join(grandparent_dir, log_name)
         # Creates local log handler
         log_handler = logging.handlers.RotatingFileHandler(

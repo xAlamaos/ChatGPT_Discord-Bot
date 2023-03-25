@@ -27,6 +27,6 @@ def check_version() -> None:
             sys.exit()
 
 
-if __name__ == '__main__': 
+if __name__ == '__main__':
     check_version()
     bot.run_discord_bot()
