@@ -20,8 +20,8 @@
 * `/chat-model [type]`  Switches between Official and Unofficial ChatGPT models
    * `OFFICIAL-GPT-3.5`: GPT-3.5 model
    * `OFFICIAL-GPT-4.0`: GPT-4.0 model (make sure your account can access gpt-4 model)
-   * `Website ChatGPT-3.5`: Website ChatGPT-3.5 model (UNOFFICIAL)
-   * `Website ChatGPT-4.0`: Website ChatGPT-4.0 model (UNOFFICIAL)(available if you got a plus account)
+   * `Website ChatGPT-3.5`: Website ChatGPT-3.5 model (Unofficial)
+   * `Website ChatGPT-4.0`: Website ChatGPT-4.0 model (Unofficial)(only available if you own a Plus account)
    
 * `/switchpersona [persona]` Switch between optional chatGPT personas
    * `random`: Picks a random persona
