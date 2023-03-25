@@ -273,8 +273,10 @@ def run_discord_bot():
         - `/reset`
          **Switch between Official/Unofficial ChatGPT mode**
         - `/chat-model`
-                `OFFICIAL`: GPT-3.5 model
-                `UNOFFICIAL`: Website ChatGPT
+                `Official GPT-3.5`: GPT-3.5 model
+                `Official GPT-3.0`: GPT-4.0 model
+                `Website ChatGPT-3.5`: Website ChatGPT 3.5
+                `Website ChatGPT-4.0`: Website ChatGPT 4.0
 
         For complete documentation, please visit https://github.com/xAlamaos/ChatGPT_Discord-Bot""")
         logger.info("\x1b[31mSomeone needs help!\x1b[0m")
